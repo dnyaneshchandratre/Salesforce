@@ -1,7 +1,6 @@
 public virtual class OopsConcepts extends AbstractClass implements Numbers {
     public static Integer N1,n2;
-    public OopsConcepts()
-    {
+    public OopsConcepts() {
         n1=21;
         n2=12;
     }
