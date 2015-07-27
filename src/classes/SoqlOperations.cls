@@ -1,7 +1,6 @@
 public class SoqlOperations {
     Integer i;
-    public void operateAccount()
-    {
+    public void operateAccount() {
         List<Account> accList= [select ID from Account where Type__c='Person'];
         for(i=0;i<accList.size();i++)
             System.debug(accList[i]);
