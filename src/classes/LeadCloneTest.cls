@@ -1,8 +1,15 @@
+/**
+ *  Title       : Test class for handler class of LeadCloneTrigger
+ *  Class       : LeadCloneTest
+ *  Author      : Dnyanesh Chandratre
+ *  Created On  : 7/20/2015
+ */
+
 @isTest
-public class LeadCloneTest 
-{
-    static testMethod void testLeadClone() 
-    {
+public class LeadCloneTest {
+
+    static testMethod void testLeadClone() {
+
         Lead objLead = new Lead();
         objLead.LastName = 'Chandratre';
         objLead.Company = 'ESPL';

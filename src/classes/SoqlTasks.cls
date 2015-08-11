@@ -1,23 +1,37 @@
+/**
+ *  Title       : Class to perform SOQL Tasks [Assignment 10]
+ *  Class       : SoqlTasks
+ *  Author      : Dnyanesh Chandratre
+ *  Created On  : 7/14/2015
+ */
+
+ // QUERY INDENT AND FORMATING
+ // NO HARD CODING FOR ALL OCCURANCES
+
 public with sharing class SoqlTasks {
 
     /* Set 1 */
     public void fetchContacts() {
-        List<Contact> contactList = [SELECT c.Phone,
-                                            c.Name,
-                                            c.MobilePhone,
-                                            c.Id,
-                                            c.FirstName
-                                     FROM Contact c];
+        // FOLLOW THIS QUERY PATTERN
+        List<Contact> contactList = [
+            SELECT c.Phone,
+                   c.Name,
+                   c.MobilePhone,
+                   c.Id,
+                   c.FirstName
+              FROM Contact c
+        ];
         System.debug('-- contactList : ' + contactList);
     }
 
     public void fetchUsers() {
+        // QUERY INDENT
         List<User> userList= [SELECT u.Id,
                                      u.IsActive,
                                      u.Email,
                                      u.Alias
-                              FROM User u
-                              WHERE u.IsActive = TRUE];
+                                FROM User u
+                               WHERE u.IsActive = TRUE];
 
         Map<ID,User> userMap = new Map<ID,User>();
         for(User user : userList) {
@@ -26,123 +40,116 @@ public with sharing class SoqlTasks {
         System.debug(userMap);
     }
 
-    public void fetchAccounts()
-    {
-
-        List<Account> accountList=[Select a.Name,
+    public void fetchAccounts() {
+        // QUERY INDENT
+        List<Account> accountList=[SELECT a.Name,
                                           a.Id,
                                           a.BillingState,
                                           a.BillingCountry,
                                           a.AccountNumber
-                                   From Account a];
+                                     FROM Account a];
 
-        map<String,ID> nameMap = new map<String,ID>();
-        map<ID,Account> idMap = new map<ID,Account>();
-        for(Account a: accountList)
-        {
-            nameMap.put(a.Name,a.ID);
-            idMap.put(a.ID,a);
+        Map<String, ID> nameMap = new Map<String,ID>();
+        Map<ID, Account> idMap = new Map<ID,Account>();
+        for(Account a: accountList) {
+            nameMap.put(a.Name, a.ID);
+            idMap.put(a.ID, a);
         }
         System.debug(nameMap);
         System.debug(idMap);
     }
 
-    public void fetchAccountsByEnrollment()
-    {
-        List<Account> fetch2010  = [Select a.Name, 
-                                           a.Id, 
-                                           a.BillingCity, 
-                                           a.AccountNumber 
-                                    From Account a 
-                                    where Enrollment_year__c INCLUDES ('2010')];
+    public void fetchAccountsByEnrollment() {
+        // CHANGE NAME
+        // QUERY INDENT
+        // NO HARD CODING OF 2010
+        List<Account> fetch2010  = [SELECT a.Name,
+                                           a.Id,
+                                           a.BillingCity,
+                                           a.AccountNumber
+                                      FROM Account a
+                                     WHERE Enrollment_year__c INCLUDES ('2010')];
 
-        List<Account> fetch1314 = [Select a.Name, 
-                                          a.Id, 
-                                          a.BillingCity, 
-                                          a.AccountNumber 
-                                   From Account a 
-                                   where Enrollment_year__c INCLUDES ('2013','2014')];
-        system.debug(fetch2010);
-        system.debug('');
-        system.debug(fetch1314);
+        // CHANGE NAME
+        // QUERY INDENT
+        // NO HARD CODING
+        List<Account> fetch1314 = [SELECT a.Name,
+                                          a.Id,
+                                          a.BillingCity,
+                                          a.AccountNumber
+                                     FROM Account a
+                                    WHERE Enrollment_year__c INCLUDES ('2013','2014')];
+        System.debug(fetch2010);
+        System.debug(fetch1314);
     }
-    
-    public void fetchAccountsByBillingState()
-    {
-        List<Account> fetchRecords = [Select a.Rating,
+
+    public void fetchAccountsByBillingState() {
+        // CHANGE NAME
+        // QUERY INDENT
+        // NO HARD CODING
+        List<Account> fetchRecords = [SELECT a.Rating,
                                              a.Name,
                                              a.Id,
                                              a.BillingState,
                                              a.AccountNumber
-                                      From Account a 
-                                      where a.BillingState not in ('Maharashtra','Kerala')
-                                      order by a.BillingState desc
-                                      nulls last 
-                                      limit 10000];
-        for(Account a: fetchRecords)
-            system.debug(a);
+                                        FROM Account a
+                                       WHERE a.BillingState NOT IN ('Maharashtra','Kerala')
+                                    ORDER BY a.BillingState DESC
+                                  NULLS LAST
+                                       LIMIT 10000];
+        for(Account a: fetchRecords) {
+            System.debug(a);
+        }
     }
 
-    public void fetchOpportunity()
-    {
-        list<Opportunity> oppList= [Select o.Id, 
-                                           o.CreatedDate, 
-                                           o.Amount 
-                                    From Opportunity o 
-                                    where o.Amount >10000 
-                                    order by o.CreatedDate 
-                                    limit 100 
-                                    offset 50 
-                                    ALL ROWS];
-        for(Opportunity a: oppList)
-            system.debug(a);
+    public void fetchOpportunity() {
+        // CHANGE NAME
+        // QUERY INDENT
+        List<Opportunity> oppList= [SELECT o.Id,
+                                           o.CreatedDate,
+                                           o.Amount
+                                      FROM Opportunity o
+                                     WHERE o.Amount >10000
+                                  ORDER BY o.CreatedDate
+                                     LIMIT 100
+                                    OFFSET 50
+                                  ALL ROWS];
+        for(Opportunity a: oppList) {
+            System.debug(a);
+        }
     }
 
     /*Set 2*/
-    public void amountStats()
-    {
-        List<AggregateResult> ar = [Select SUM(o.Amount) s,
-                                           CloseDate 
-                                    From Opportunity o 
-                                    where IsClosed=FALSE AND 
-                                          CloseDate = THIS_FISCAL_YEAR 
-                                    group by CloseDate];
-        map<Integer,Double> mapYear = new map <Integer,Double>();
-        for(AggregateResult a : ar)
-        {
-            Date d=Date.valueOf(a.get('CloseDate'));
-            Integer year=d.year();
-            Double amount = Double.valueOf(a.get('s'));
-            mapYear.put(year,amount);
+    public void amountStats() {
+        // CHANGE NAME
+        // QUERY INDENT
+        List<AggregateResult> ar = [SELECT SUM(o.Amount) s,
+                                           CloseDate
+                                      FROM Opportunity o
+                                     WHERE IsClosed=FALSE AND
+                                           CloseDate = THIS_FISCAL_YEAR
+                                  GROUP BY CloseDate];
+        Map<Integer,Double> mapYear = new Map<Integer,Double>();
+        for(AggregateResult a : ar) {
+            mapYear.put(
+                Date.valueOf(a.get('CloseDate')).year(),
+                Double.valueOf(a.get('s'))
+            );
         }
-        system.debug(mapYear);
+        System.debug(mapYear);
     }
 
-    public void leadSources()
-    {
-        List<AggregateResult> ar = [Select count_distinct(Name) cd,
-                                           LeadSource 
-                                    from lead 
-                                    group by LeadSource 
-                                    having count_distinct(ID) > 10];
-        for(AggregateResult a : ar)
-        {
+    public void leadSources() {
+        // CHANGE NAME
+        List<AggregateResult> ar = [SELECT count_distinct(Name) cd,
+                                           LeadSource
+                                      FROM lead
+                                  GROUP BY LeadSource
+                                    HAVING count_distinct(ID) > 10];
+        for(AggregateResult a : ar) {
             System.debug('The count of distinct leads for ' + a.get('LeadSource') + ' is ' + a.get('cd'));
         }
     }
-
-/*
-Scratch 
-
-        List<AggregateResult> aggregateResults = [
-            SELECT COUNT(Name) leadName
-                 , Status
-                 , LeadSource
-              FROM Lead
-          GROUP BY LeadSource
-                 , Status
-        ];
-*/
 
     public void leadStatus_Abbas() {
         Map<String, Map<String, Integer>> leadStatusMap = new Map<String, Map<String, Integer>>();
@@ -174,133 +181,96 @@ Scratch
         system.debug('--- leadStatusMap : ' + leadStatusMap);
     }
 
-
-    public void leadStatus()
-    {
-        List<AggregateResult> ar = [Select count(Name) lname,
-                                           Status,
-                                           LeadSource 
-                                    from Lead 
-                                    group by LeadSource,
-                                             Status];
-
-        map<String,Integer> mapSource  = new map<String,Integer>();
-        map<String,map<String,Integer>> mapStatus = new map<String,map<String,Integer>>();
-
-        Integer i=0;
-
-        for(i=0;i<ar.size();i++) {
-            //System.debug(i);
-            //System.debug(ar[i]);
-            mapSource.put(String.valueOf(ar[i].get('LeadSource')),Integer.valueOf(ar[i].get('lname')));
-            mapStatus.put(String.valueOf(ar[i].get('Status')),mapSource);
-            
-        }
-        System.debug(mapStatus);
-        System.debug(mapSource);
-        /*Set<String> keys = mapSource.keyset();
-        //System.debug(keys);
-        for(String key: keys)
-            System.debug(key + ' : ' +mapSource.get(key));*/
-    }
     /*Set 3*/
     /*Set 3: Child to Parent*/
-    public void fetchMedia()
-    {
-        list<Contact> conList=[Select c.Name, 
-                                      c.Account.Industry, 
-                                      c.Account.Name, 
-                                      c.Active__c, 
-                                      c.Account.Id, 
-                                      c.AccountId 
-                               From Contact c 
-                               where c.Account.Industry = 'media' AND 
-                                     c.Active__c = 'Yes'];
-        for(Contact c : conList)
-        {
-            system.debug('Contact : ' + c.Name);
-            system.debug('Account : ' + c.Account.Name);
+    public void fetchMedia() {
+        List<Contact> conList=[SELECT c.Name,
+                                      c.Account.Industry,
+                                      c.Account.Name,
+                                      c.Active__c,
+                                      c.Account.Id,
+                                      c.AccountId
+                                 FROM Contact c
+                                WHERE c.Account.Industry = 'media'
+                                  AND c.Active__c = 'Yes'];
+        for(Contact c : conList) {
+            System.debug('Contact : ' + c.Name);
+            System.debug('Account : ' + c.Account.Name);
         }
     }
-    public void fetchJohnFromC()
-    {
-        list<C__c> cList=[Select c.Name__c, 
-                                 c.B__r.Name, 
-                                 c.A__r.Name 
-                          From C__c c 
-                          where c.Name__c Like 'john%'];
-        for(C__c c : cList)
-        {
-            system.debug('Child : ' + c.Name__c);
-            system.debug('Parents : ' + c.A__r.Name + ',' + c.B__r.Name);
+    public void fetchJohnFromC() {
+        List<C__c> cList=[SELECT c.Name__c,
+                                 c.B__r.Name,
+                                 c.A__r.Name
+                          FROM C__c c
+                          WHERE c.Name__c Like 'john%'];
+        for(C__c c : cList) {
+            System.debug('Child : ' + c.Name__c);
+            System.debug('Parents : ' + c.A__r.Name + ',' + c.B__r.Name);
         }
     }
-    /*Set 3: Parent to Child*/ 
-    public void fetchJohn()
-    {
-        list<Account> accList=[Select Name, 
-                                      Id, 
-                                      Active__c, 
-                                      AccountNumber, 
-                                      (Select Id,
-                                              Name 
-                                       From Contacts) 
-                                From Account 
-                                where Id IN (Select AccountId 
-                                             From Contact 
-                                             where Name Like 'John%')];
-        for(Account a : accList)
-        { 
-            System.debug(a.Name);
-            System.debug(a.Active__c+','+a.AccountNumber);
-            for(Contact c : a.Contacts)
-                System.debug(c.Name);
+    /*Set 3: Parent to Child*/
+    public void fetchJohn() {
+        List<Account> accList=[SELECT Name,
+                                      Id,
+                                      Active__c,
+                                      AccountNumber,
+                                      (SELECT Id,
+                                              Name,
+                                              AccountId
+                                         FROM Contacts
+                                        WHERE Name LIKE 'John%')
+                                 FROM Account
+                                WHERE Id IN (SELECT AccountId
+                                               FROM Contact
+                                              WHERE Name LIKE 'John%')];
+        Map<Account, List<Contact>> mapContacts = new Map<Account, List<Contact>>();
+
+        for(Account accIterator : accList) {
+            mapContacts.put(accIterator,accIterator.Contacts);
+        }
+        for(Account accIterator : mapContacts.keySet()) {
+            System.debug('\nAccount record: \n' + accIterator + '\nRelaterd Contacts : \n' + mapContacts.get(accIterator));
         }
     }
-    public void wonOpportunities()
-    {
-        list<Account> accList= [Select a.Name,
-                                       a.Id, a.AccountNumber, 
-                                       (Select Id, 
-                                               StageName 
-                                        From Opportunities) 
-                                 From Account a 
-                                 where Id IN (Select AccountID 
-                                              from Opportunity 
-                                              where StageName='Closed Won')];
-        for(Account a : accList)
-        {
-            System.debug(a.Id+' : '+a.Name);
-            System.debug('Account Number : ' + a.AccountNumber + '\RList of Opportunities:');
-            for(Opportunity o : a.Opportunities)
-                System.debug('>>>'+o.Id + ' : ' + o.StageName);
+    public void wonOpportunities() {
+        List<Account> accList= [SELECT a.Name,
+                                       a.Id,
+                                       a.AccountNumber
+                                   FROM Account a
+                                  WHERE Id IN (SELECT AccountID
+                                                 FROM Opportunity
+                                                WHERE StageName='Closed Won')];
+
+        for(Account accIterator : accList) {
+            System.debug(accIterator);
         }
     }
-    public void fetchJohnFromA()
-    {
-        list<A__c> aList= [Select a.Id, 
-                                  (Select A__c,
-                                          Name__c 
-                                   From Cs__r
-                                   where Name__c Like 'john%') 
-                           From A__c a 
-                           where a.Id IN (Select A__c 
-                                          From C__c c 
-                                          where c.Name__c Like 'john%')];
+
+    public void fetchJohnFromA() {
+        List<A__c> aList= [SELECT a.Id,
+                                  (SELECT A__c,
+                                          Name__c
+                                     FROM Cs__r
+                                    WHERE Name__c Like 'john%')
+                             FROM A__c a
+                            WHERE a.Id IN (SELECT A__c
+                                             FROM C__c c
+                                            WHERE c.Name__c Like 'john%')];
         system.debug(alist.size());
-        for(A__c a : aList)
-        {
-            System.debug(a.Id+' : \n'); 
-            for(C__c c : a.Cs__r)
-                System.debug('>>>'+c.Id + ' : ' + c.Name__c ); 
-        } 
+        Map<A__c, List<C__c>> aToCMap = new Map<A__c, List<C__c>>();
+        for(A__c aIterator : aList) {
+            aToCMap.put(aIterator,aIterator.Cs__r);
+        }
+        for(A__c aIterator : aToCMap.keySet()) {
+            System.debug('\nA record: \n' + aIterator + '\nRelaterd Cs : \n' + aToCMap.get(aIterator));
+        }
     }
-    
+    // FIND ('*edge*') IN Website FIELD RETURNING Account
     /*Set 4*/
-    public void testSearch()
-    {
-        List<List<SObject>> searchTest = [FIND 'Test*' 
-                                          IN NAME FIELDS 
+    public void testSearch() {
+        List<List<SObject>> searchTest = [FIND 'Test*'
+                                          IN NAME FIELDS
                                           RETURNING Contact,
                                                     Account,
                                                     Lead,
@@ -312,51 +282,61 @@ Scratch
         System.debug(conList+'\n'+accList+'\n'+leadList+'\n'+userList);
     }
     /*Set 5*/
-    public void logErrors()
-    {
-        List<Lead> leadList = new List<Lead>(); 
+    public void logErrors() {
+        List<Lead> leadList = new List<Lead>();
+        List<Database.SaveResult> results = new List<Database.SaveResult>();
         for(Integer i=0;i<100;i++)
         {
             Lead temp = new Lead();
             if(math.mod(i,2)==0)
-                temp = new Lead(LastName='Test'+i, Company='ABCD Pvt. Ltd.', Status='Working - Contacted', Role__c= 'Role'+i);
+                temp = new Lead(
+                    LastName='Test' + i,
+                    Company='ABCD Pvt. Ltd.',
+                    Status='Working - Contacted',
+                    Role__c= 'Role' + i
+                );
             else
                 temp = new Lead(LastName='Test'+i, Company='ABCD Pvt. Ltd.', Status='Working - Contacted', Role__c= 'Role');
             leadList.add(temp);
         }
-        try
-        {
-            insert leadList;
+        results = Database.insert(leadList,false);
+        List<Log__c> errorLog = new List<Log__c>();
+        for(Database.SaveResult resIterator : results) {
+            if(!resIterator.isSuccess()) {
+                errorLog.add(new Log__c( Error_Description__c = String.valueOf(resIterator.getErrors())));
+            }
         }
-        catch(DMLException e)
-        { 
-           Log__c errorLog =new Log__c( Error_Description__c = e.getMessage());
-           insert errorLog;
-           System.debug('The following exception has occurred: ' + e.getMessage()); 
-        }
+        insert errorLog;
     }
-    public void deleteInactive()
-    {
-        list<Account> accList=[select Id,
-                                      CreatedDate 
-                               from Account 
-                               where Active__c = 'No' AND 
-                                     createdDate >: Date.today().addDays(-90) 
-                               order by createdDate DESC];
-        for(Account a : accList)
-            system.debug(a.createdDate);
+
+    public void deleteInactive() {
+        Date referenceDate = Date.today().addDays(-90);
+        list<Account> accList=[SELECT Id,
+                                      CreatedDate
+                                 FROM Account
+                                WHERE Active__c = 'No'
+                                  AND createdDate > :referenceDate
+                             ORDER BY createdDate DESC];
+        for(Account a : accList) {
+            System.debug(a.createdDate);
+        }
         delete accList;
     }
-    public void upsertAsset()
-    {
-        list<Asset> assets = new list<Asset>();
-        
-        for(Integer i=120;i<130;i++)
-        {
-            Asset temp = new Asset(Name = 'Asset'+i, Price=i*10, Line_Item_ID__c='LI'+i,AccountId='');
-            system.debug(temp);
-            assets.add(temp);
-        }
+    public void upsertAsset() {
+        Asset assetInstance = new Asset(
+            Name = 'Test Asset',
+            Line_Item_ID__c = 'LI001'
+        );
+
+        List<Asset> assets = new List<Asset> {
+            assetInstance, new Asset(
+                Name = 'Test Asset',
+                Line_Item_ID__c = 'LI002'
+            )
+        };
+
+        assetInstance.Name = 'Updated Test Asset';
+        assets.add(assetInstance);
         upsert assets Line_Item_ID__c;
     }
 }

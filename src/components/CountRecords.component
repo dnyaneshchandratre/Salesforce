@@ -3,6 +3,5 @@
                      description="Displays the total records present on the page."
                      type="Integer"
                      required="true" />
-                     
-                     This is a component
+                     Count is {!countOfRecords}.
 </apex:component>

@@ -6,10 +6,7 @@ public with sharing class InvoiceListController {
 
     public list<Line_Item__c> getlistOfLineItems() {
         if(clickFlag) {
-            return [SELECT l.Unit_Sold__c,
-                           l.Unit_Price__c,
-                           l.Name,
-                           l.Merchandise_Name__r.Name,
+            return [SELECT l.Merchandise_Name__r.Name,
                            l.Merchandise_Name__c,
                            l.Invoice_Statement__r.Email_Address__c,
                            l.Invoice_Statement__r.Phone__c,

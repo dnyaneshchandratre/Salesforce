@@ -17,8 +17,28 @@
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>*</members>
-        <name>StaticResource</name>
+        <members>unfiled$public</members>
+        <members>unfiled$public/Big_Deal_Alert_Mail</members>
+        <members>unfiled$public/Employee_Deactivation</members>
+        <members>unfiled$public/Follow_Up_on_Lead</members>
+        <members>unfiled$public/Leave_Approval_Template</members>
+        <members>unfiled$public/MarketingProductInquiryResponse</members>
+        <members>unfiled$public/New_Approval_Request</members>
+        <members>unfiled$public/New_Project_Assignment</members>
+        <members>unfiled$public/Reminder_of_End_Date</members>
+        <members>unfiled$public/SUPPORTSelfServiceNewCommentNotificationSAMPLE</members>
+        <members>unfiled$public/SUPPORTSelfServiceNewUserLoginInformationSAMPLE</members>
+        <members>unfiled$public/SUPPORTSelfServiceResetPasswordSAMPLE</members>
+        <members>unfiled$public/SalesNewCustomerEmail</members>
+        <members>unfiled$public/SupportCaseAssignmentNotification</members>
+        <members>unfiled$public/SupportCaseCreatedPhoneInquiries</members>
+        <members>unfiled$public/SupportCaseCreatedWebInquiries</members>
+        <members>unfiled$public/SupportCaseResponse</members>
+        <members>unfiled$public/SupportEscalatedCaseNotification</members>
+        <members>unfiled$public/SupportEscalatedCaseReassignment</members>
+        <members>unfiled$public/SupportSelfServiceNewLoginandPassword</members>
+        <members>unfiled$public/SupportSelfServiceResetPassword</members>
+        <name>EmailTemplate</name>
     </types>
     <version>33.0</version>
 </Package>
