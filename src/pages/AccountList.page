@@ -21,10 +21,10 @@
                                     value="Search" 
                                     action="{!searchAccounts}" 
                                     reRender="showmsg, AccountList" />
-                <apex:pageMessages id="showmsg" />
                 <apex:commandLink value="Clear Results" 
                                   action="{!clearList}" 
                                   reRender="AccountList, SearchKey, showmsg" />
+                <apex:pageMessages id="showmsg" />
                 <apex:pageblockTable id="AccountList" 
                                      styleclass="AccountList" 
                                      value="{!accountList}" 

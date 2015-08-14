@@ -1,23 +1,24 @@
 public with sharing class MapAccountsContactsOpportunities {
-    public void getMap() {
-        Map<String, Map<String, List<Opportunity>>> aSmallMap = 
-            new Map<String, Map<String, List<Opportunity>>>();
+    /*public void getMap() {
+        Map<Account, Map<Contact, List<Opportunity>>> aSmallMap = 
+            new Map<Account, Map<Contact, List<Opportunity>>>();
         List<Account> accList = [SELECT Name,
                                         (SELECT Name,
                                                 StageName,
                                                 Amount
-                                         FROM Opportunities),
+                                           FROM Opportunities),
                                         (SELECT Name
-                                         FROM Contacts
-                                         LIMIT 1)
-                                 FROM Account];
+                                           FROM Contacts
+                                          LIMIT 1)
+                                   FROM Account];
 
         for(Account accIterator : accList) {
             if(!aSmallMap.containsKey(accIterator.Name)) {
                 aSmallMap.put(
+                    accIterator.Name,
                     new Map<String, List<Opportunity>>
                     {
-//                        accIterator.Contacts.Name => accIterator.Opportunities
+                        accIterator.Contacts => accIterator.Opportunities
                     }
                 );
             } else {
@@ -30,5 +31,5 @@ public with sharing class MapAccountsContactsOpportunities {
         for(String key : aSmallMap.keySet()) {
             System.debug('********* MAP IS : ' + Key + '\n' + aSmallMapt.get(key));
         }
-    }
+    }*/
 }

@@ -6,28 +6,29 @@ public with sharing class InvoiceListController {
 
     public list<Line_Item__c> getlistOfLineItems() {
         if(clickFlag) {
-            return [SELECT l.Merchandise_Name__r.Name,
-                           l.Merchandise_Name__c,
-                           l.Invoice_Statement__r.Email_Address__c,
-                           l.Invoice_Statement__r.Phone__c,
-                           l.Invoice_Statement__r.State__c,
-                           l.Invoice_Statement__r.Zip__c,
-                           l.Invoice_Statement__r.City__c,
-                           l.Invoice_Statement__r.Street_Address__c,
-                           l.Invoice_Statement__r.Company_Name__c,
-                           l.Invoice_Statement__r.Description__c,
-                           l.Invoice_Statement__r.Name__c,
-                           l.Invoice_Statement__r.CreatedDate,
-                           l.Invoice_Statement__r.Name,
-                           l.Invoice_Statement__c
-                    FROM Line_Item__c l where l.Invoice_Statement__c =: idOfInvoice];
+            return [SELECT Merchandise_Name__r.Name,
+                           Merchandise_Name__c,
+                           Invoice_Statement__r.Email_Address__c,
+                           Invoice_Statement__r.Phone__c,
+                           Invoice_Statement__r.State__c,
+                           Invoice_Statement__r.Zip__c,
+                           Invoice_Statement__r.City__c,
+                           Invoice_Statement__r.Street_Address__c,
+                           Invoice_Statement__r.Company_Name__c,
+                           Invoice_Statement__r.Description__c,
+                           Invoice_Statement__r.Name__c,
+                           Invoice_Statement__r.CreatedDate,
+                           Invoice_Statement__r.Name,
+                           Invoice_Statement__c
+                      FROM Line_Item__c 
+                     WHERE Invoice_Statement__c =: idOfInvoice];
         } else {
-            return [SELECT l.Invoice_Statement__r.Zip__c,
-                           l.Invoice_Statement__r.City__c,
-                           l.Invoice_Statement__r.Name__c,
-                           l.Invoice_Statement__r.Name,
-                           l.Invoice_Statement__c
-                    FROM Line_Item__c l];
+            return [SELECT Invoice_Statement__r.Zip__c,
+                           Invoice_Statement__r.City__c,
+                           Invoice_Statement__r.Name__c,
+                           Invoice_Statement__r.Name,
+                           Invoice_Statement__c
+                      FROM Line_Item__c l];
         }
     }
 

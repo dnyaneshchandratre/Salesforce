@@ -1,26 +1,20 @@
 trigger ContactTrigger on Contact (before insert, before update, after insert) {
 
-    // CHANGE THE NAME disableTriggerInstance
-    TriggerSetting__c disableTriggerInstance = TriggerSetting__c.getInstance();
+    // CHANGE THE NAME disableTriggerInstance [Done]
+    // CHECK TRUE AND RETURN [Done]
+    if(TriggerSetting__c.getInstance().Contact_Trigger__c == true) {
+        return;
+    }
 
-    // CHECK TRUE AND RETURN
-    if(disableTriggerInstance.Contact_Trigger__c == false) {
-        if(Trigger.isBefore) {
+    if(Trigger.isBefore && (Trigger.isInsert || Trigger.isUpdate)) {
 
-            // NO NEED TO CHECK FOR TWO DIFFERENT CONDITIONS
-            // AS SAME METHOD FROM HANDLER IS BEING CALLED
-            // IF(TRIGGER.ISBEFORE && (TRIGGER.ISINSERT || TRIGGER.ISUPDATE))
-            if(Trigger.isInsert) {
-                ContactTriggerHandler.updateAccountLookup(Trigger.new);
-            }
-            if(Trigger.isUpdate) {
-                ContactTriggerHandler.updateAccountLookup(Trigger.new);
-            }
-        }
-        if(Trigger.isAfter) {
-            if(Trigger.isInsert) {
-                ContactTriggerHandler.SettingPrimaryContact(Trigger.new);
-            }
-        }
+        // NO NEED TO CHECK FOR TWO DIFFERENT CONDITIONS
+        // AS SAME METHOD FROM HANDLER IS BEING CALLED
+        // IF(TRIGGER.ISBEFORE && (TRIGGER.ISINSERT || TRIGGER.ISUPDATE))
+        // ContactTriggerHandler.updateAccountLookup(Trigger.new);
+    }
+
+    if(Trigger.isAfter && Trigger.isInsert) {
+            ContactTriggerHandler.populatePrimaryContact(Trigger.new);
     }
 }

@@ -15,11 +15,11 @@ public with sharing class RedirectOnCancel {
         String objectIdPrefix = accountSchema.getKeyPrefix();
         Id listViewId;
 
-        List<ListView> lstList = [Select l.id
-                                  From ListView l 
-                                  where l.Name = 'All Accounts'];
+        List<ListView> listViewList = [SELECT id
+                                    FROM ListView 
+                                   WHERE Name = 'All Accounts'];
 
-        for(ListView iterator : lstList) {
+        for(ListView  : listViewList) {
             listViewId = iterator.Id;
         }
 

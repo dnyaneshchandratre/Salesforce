@@ -10,75 +10,83 @@
 private class ContactTriggerHandlerTest {
 
     static testMethod void testValid() {
-        Contact conInstance = new Contact();
-        Account accInstance = new Account();
-        conInstance.LastName ='foo';
-        conInstance.email = 'foo@abc.com';
 
-        accInstance.Name = 'ABC Containers';
-        accInstance.website = 'www.abc.com';
+        Contact contactInstance = new Contact();
+        Account accountInstance = new Account();
 
-        insert accInstance;
+        contactInstance.LastName ='foo';
+        contactInstance.email = 'foo@abc.com';
+
+        accountInstance.Name = 'ABC Containers';
+        accountInstance.website = 'www.abc.com';
+
+        insert accountInstance;
+
         test.startTest();
-        insert conInstance;
+            insert contactInstance;
         test.stopTest();
 
-        conInstance = [SELECT AccountId FROM Contact];
-        System.assertEquals(accInstance.Id,conInstance.AccountId);
+        contactInstance = [SELECT AccountId 
+                             FROM Contact];
+        System.assertEquals(accountInstance.Id,contactInstance.AccountId);
     }
 
     static testMethod void testDifferentDomain() {
-        Contact conInstance = new Contact();
-        Account accInstance = new Account();
-        conInstance.LastName ='foo';
-        conInstance.email = 'foo@xyz.com';
+        Contact contactInstance = new Contact();
+        Account AccountInstance = new Account();
 
-        accInstance.Name = 'ABC Containers';
-        accInstance.website = 'www.abc.com';
+        contactInstance.LastName ='foo';
+        contactInstance.email = 'foo@xyz.com';
 
-        insert accInstance;
+        AccountInstance.Name = 'ABC Containers';
+        AccountInstance.website = 'www.abc.com';
+
+        insert AccountInstance;
+
         test.startTest();
-        insert conInstance;
+            insert contactInstance;
         test.stopTest();
 
-        conInstance = [SELECT AccountId FROM Contact];
-        System.assertEquals(NULL,conInstance.AccountId);
+        contactInstance = [SELECT AccountId FROM Contact];
+        System.assertEquals(NULL,contactInstance.AccountId);
     }
 
     static testMethod void testBlankEmail() {
-        Contact conInstance = new Contact();
-        Account accInstance = new Account();
-        conInstance.LastName ='foo';
-        conInstance.email = '';
+        Contact contactInstance = new Contact();
+        Account AccountInstance = new Account();
+        contactInstance.LastName ='foo';
+        contactInstance.email = '';
 
-        accInstance.Name = 'ABC Containers';
-        accInstance.website = 'www.abc.com';
+        AccountInstance.Name = 'ABC Containers';
+        AccountInstance.website = 'www.abc.com';
 
-        insert accInstance;
+        insert AccountInstance;
+
         test.startTest();
-        insert conInstance;
+            insert contactInstance;
         test.stopTest();
 
-        conInstance = [SELECT AccountId FROM Contact];
-        System.assertEquals(NULL,conInstance.AccountId);
+        contactInstance = [SELECT AccountId FROM Contact];
+        System.assertEquals(NULL,contactInstance.AccountId);
     }
 
     static testMethod void testBlankWebsite() {
-        Contact conInstance = new Contact();
-        Account accInstance = new Account();
-        conInstance.LastName ='foo';
-        conInstance.email = 'foo@xyz.com';
+        Contact contactInstance = new Contact();
+        Account AccountInstance = new Account();
+        contactInstance.LastName ='foo';
+        contactInstance.email = 'foo@xyz.com';
 
-        accInstance.Name = 'ABC Containers';
-        accInstance.website = '';
+        AccountInstance.Name = 'ABC Containers';
+        AccountInstance.website = '';
 
-        insert accInstance;
+        insert AccountInstance;
+
         test.startTest();
-        insert conInstance;
+            insert contactInstance;
         test.stopTest();
 
-        conInstance = [SELECT AccountId FROM Contact];
-        System.assertEquals(NULL,conInstance.AccountId);
+        contactInstance = [SELECT AccountId FROM Contact];
+        System.assertEquals(NULL,contactInstance.AccountId);
     }
 
 }

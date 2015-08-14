@@ -3,6 +3,7 @@
  */
 
 // VERY GOOD.. !! :)
+
 @isTest
 public class DataFactoryCase {
 
@@ -16,9 +17,11 @@ public class DataFactoryCase {
                 )
             );
         }
+
         if(isInsert == true) {
             insert caseList;
         }
         return caseList;
+
     }
 }

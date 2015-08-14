@@ -25,11 +25,9 @@ public class caseUpdationTest {
 
         test.startTest();
         insert objCase;
-        System.debug('/*/*/*/*/*/*/*/*/*/*/*/*/*/ 1: ' + objAccount.Id);
         test.stopTest();
 
         objCase = [SELECT AccountId FROM Case];
-        System.debug('/*/*/*/*/*/*/*/*/*/*/*/*/*/ : ' + objCase.AccountId);
         System.assertEquals(objAccount.Id,objCase.AccountId);
     }
     
@@ -49,11 +47,9 @@ public class caseUpdationTest {
 
         test.startTest();
         insert objCase;
-        System.debug('/*/*/*/*/*/*/*/*/*/*/*/*/*/ 1: ' + objAccount.Id);
         test.stopTest();
 
         objCase = [SELECT AccountId FROM Case];
-        System.debug('/*/*/*/*/*/*/*/*/*/*/*/*/*/ : ' + objCase.AccountId);
         System.assertEquals(objAccount.Id,objCase.AccountId);
     }
     
@@ -73,11 +69,9 @@ public class caseUpdationTest {
 
         test.startTest();
         insert objCase;
-        System.debug('/*/*/*/*/*/*/*/*/*/*/*/*/*/ 1: ' + objAccount.Id);
         test.stopTest();
 
         objCase = [SELECT AccountId FROM Case];
-        System.debug('/*/*/*/*/*/*/*/*/*/*/*/*/*/ : ' + objCase.AccountId);
         System.assertEquals(objAccount.Id,objCase.AccountId);
     }
     
@@ -97,11 +91,9 @@ public class caseUpdationTest {
 
         test.startTest();
         insert objCase;
-        System.debug('/*/*/*/*/*/*/*/*/*/*/*/*/*/ 1: ' + objAccount.Id);
         test.stopTest();
 
         objCase = [SELECT AccountId FROM Case];
-        System.debug('/*/*/*/*/*/*/*/*/*/*/*/*/*/ : ' + objCase.AccountId);
         System.assertEquals(NULL,objCase.AccountId);
     }
 }

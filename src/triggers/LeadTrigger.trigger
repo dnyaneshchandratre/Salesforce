@@ -1,8 +1,7 @@
 trigger LeadTrigger on Lead (after insert) {
 
     // CHANGE THE NAME
-    TriggerSetting__c disableTriggerInstance = TriggerSetting__c.getInstance();
-    if(disableTriggerInstance.Lead_Trigger__c == true) {
+    if(TriggerSetting__c.getInstance().Lead_Trigger__c == true) {
         return;
     }
 

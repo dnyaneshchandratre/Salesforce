@@ -1,42 +1,46 @@
 public with sharing class JsonToRecordCreator implements Database.Batchable<sObject>, Database.Stateful, Schedulable{
 
-    // IS STATEFUL AND SCHEDULABLE NEEDED ???
+    // IS STATEFUL AND SCHEDULABLE NEEDED ??? [Not needed]
 
-    // INDENT QUERY AS IN DailyOpportunityStatus CALSS
-    public final static string query = 'SELECT Name, JSON__c, Processed__c FROM Event__c where Processed__c = false';
+    // INDENT QUERY AS IN DailyOpportunityStatus CLASS [Done]
+    public final static string query = 'SELECT Name,'
+                                     + '       JSON__c,' 
+                                     + '       Processed__c' 
+                                     + '  FROM Event__c '
+                                     + ' WHERE Processed__c = false';
     public List<sObject> listRecords = new List<sObject>();
-    Map<String, Object> recordCreator = new Map<String, Object>();
+    Map<String, Object> recordCreatorMap = new Map<String, Object>();
     SObject newRecord;
 
-    // PARAMETER NAME
-    public Iterable<sObject> start(Database.BatchableContext bc) {
+    // PARAMETER NAME [Done]
+    public Database.QueryLocator start(Database.BatchableContext batchableContextInstance) {
         System.debug('<<<<<<<<< IN START >>>>>>>>>>');
         return Database.getQueryLocator(query);
     }
 
-    public void execute(Database.BatchableContext bc, List<Event__c> events) {
+    public void execute(Database.BatchableContext batchableContextInstance, List<Event__c> eventList) {
         System.debug('<<<<<<<<< IN EXECUTE >>>>>>>>>>');
 
-        // ITERATOR SHOULD BE SIMPLE NAME OF OBJECT -> event
-        for(Event__c iterator : events) {
+        // ITERATOR SHOULD BE SIMPLE NAME OF OBJECT -> event [Done]
+        for(Event__c event : eventList) {
 
             // DIFFERENCE BETWEEN deserializeUntyped AND deserialize
-            recordCreator = (Map<String, Object>)Json.deserializeUntyped(iterator.JSON__c);
-            newRecord = Schema.getGlobalDescribe().get(iterator.Name).newSObject();
-            for(String fieldName : recordCreator.keySet()) {
+            recordCreatorMap = (Map<String, Object>)Json.deserializeUntyped(event.JSON__c);
+            newRecord = Schema.getGlobalDescribe().get(event.Name).newSObject();
+            for(String fieldName : recordCreatorMap.keySet()) {
                 newRecord.put( fieldName,
-                               recordCreator.get(fieldName) );
+                               recordCreatorMap.get(fieldName) );
             }
             listRecords.add(newRecord);
-            iterator.Processed__c = true;
+            event.Processed__c = true;
         }
         if(!listRecords.isEmpty()) {
-            update events;
+            update eventList;
             insert listRecords;
         }
     }
-    public void execute(SchedulableContext sc) {}
-    public void finish(Database.BatchableContext bc) {
+    public void execute(SchedulableContext schedulableContextInstance) {}
+    public void finish(Database.BatchableContext batchableContextInstance) {
         System.debug('<<<<<<<<< IN FINISH >>>>>>>>>>');
     }
 }

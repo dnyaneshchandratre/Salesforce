@@ -7,17 +7,17 @@
 
 public with sharing class ContactTriggerHandler {
 
-    public static void updateAccountLookup(List<Contact> newContacts) {
+    /*public static void updateAccountLookup(List<Contact> newContacts) {
 
         // SPACE IN ONE LINER COMMENT
         // CHANGE THE NAME accList
         // QUERY INDENTATION AND CAPITALIZATION
         //Fetch accounts with not null domain
-        List<Account> accList = [Select a.Website,
+        List<Account> accList = [SELECT a.Website,
                                         a.Id
-                                 From Account a
-                                 where a.Website <> NULL
-                                 order by a.Name];
+                                 FROM Account a
+                                 WHERE a.Website <> NULL
+                                 ORDER BY a.Name];
 
         // VARIABLES NOT BEING USED SHOULD BE COMMENTED/REMOVED
         //Create map of websites and Ids
@@ -45,30 +45,35 @@ public with sharing class ContactTriggerHandler {
                     }
                 }
             }
-        }*/
-    }
+        }
+    }*/
 
-    // UPDATE METHOD NAME TO HAVE VERB FORM
-    public static void SettingPrimaryContact(List<Contact> contacts) {
+    // UPDATE METHOD NAME TO HAVE VERB FORM [Done]
+    public static void populatePrimaryContact(List<Contact> contactList) {
 
-        // CHANGE NAME
-        Account accInstance;
-        List<Account> accList = new List<Account>();
+        // CHANGE NAME [Done]
+        Account accountInstance;
+        List<Account> accountList = new List<Account>();
 
-        for(Contact conIterator : contacts) {
-
-            // WHILE DEALING WITH STRINGS, USE isBlank OR isNotBlank METHODS
-            // THEY CHECK FOR NULL AS WELL AS BLANK VALUES
-            // HERE BLANK VALUES ARE NOT HANDLED
-            if(conIterator.Primary__c <> true && conIterator.AccountId <> NULL && conIterator.Email <> NULL) {
-                System.debug('IN HANDLER IF PART************* : ' + conIterator.Email);
-                accInstance = new Account(Id = conIterator.AccountId);
-                accInstance.Primary_Contact__c = conIterator.Email;
-                accList.add(accInstance);
+        for(Contact contactIterator : contactList) {
+            // WHILE DEALING WITH STRINGS, USE isBlank OR isNotBlank METHODS [Done]
+            // THEY CHECK FOR NULL AS WELL AS BLANK VALUES [Done]
+            // HERE BLANK VALUES ARE NOT HANDLED [Done]
+            if(
+                contactIterator.Primary__c <> true &&
+                String.isNotBlank(contactIterator.AccountId) && 
+                String.isNotBlank(contactIterator.Email)
+            ) {
+                System.debug('IN HANDLER IF PART************* : ' + contactIterator.Email);
+                accountInstance = new Account(Id = contactIterator.AccountId);
+                accountInstance.Primary_Contact__c = contactIterator.Email;
+                accountList.add(accountInstance);
             }
         }
-        if(!accList.isEmpty()) {
-            update accList;
+
+        if(accountList.isEmpty() <> true) {
+            update accountList;
         }
+
     }
 }

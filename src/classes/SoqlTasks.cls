@@ -5,7 +5,7 @@
  *  Created On  : 7/14/2015
  */
 
- // QUERY INDENT AND FORMATING
+ // QUERY INDENT AND FORMATING 
  // NO HARD CODING FOR ALL OCCURANCES
 
 public with sharing class SoqlTasks {
@@ -25,13 +25,15 @@ public with sharing class SoqlTasks {
     }
 
     public void fetchUsers() {
-        // QUERY INDENT
-        List<User> userList= [SELECT u.Id,
-                                     u.IsActive,
-                                     u.Email,
-                                     u.Alias
-                                FROM User u
-                               WHERE u.IsActive = TRUE];
+        // QUERY INDENT [Done]
+        List<User> userList= [
+            SELECT Id,
+                   IsActive,
+                   Email,
+                   Alias
+              FROM User u
+             WHERE IsActive = TRUE
+        ];
 
         Map<ID,User> userMap = new Map<ID,User>();
         for(User user : userList) {
@@ -41,7 +43,7 @@ public with sharing class SoqlTasks {
     }
 
     public void fetchAccounts() {
-        // QUERY INDENT
+        // QUERY INDENT [Done]
         List<Account> accountList=[SELECT a.Name,
                                           a.Id,
                                           a.BillingState,
@@ -60,94 +62,116 @@ public with sharing class SoqlTasks {
     }
 
     public void fetchAccountsByEnrollment() {
-        // CHANGE NAME
-        // QUERY INDENT
-        // NO HARD CODING OF 2010
-        List<Account> fetch2010  = [SELECT a.Name,
-                                           a.Id,
-                                           a.BillingCity,
-                                           a.AccountNumber
-                                      FROM Account a
-                                     WHERE Enrollment_year__c INCLUDES ('2010')];
+        // CHANGE NAME [Done]
+        // QUERY INDENT [Done]
+        // NO HARD CODING OF 2010 [Done]
+        
+        final string year2010 = '2010';
+        final string year2013 = '2013';
+        final string year2014 = '2014';
+        List<Account> accountListForYear2010  = [
+            SELECT Name,
+                   Id,
+                   BillingCity,
+                   AccountNumber
+              FROM Account a
+             WHERE Enrollment_year__c INCLUDES (:year2010)];
 
-        // CHANGE NAME
-        // QUERY INDENT
-        // NO HARD CODING
-        List<Account> fetch1314 = [SELECT a.Name,
-                                          a.Id,
-                                          a.BillingCity,
-                                          a.AccountNumber
-                                     FROM Account a
-                                    WHERE Enrollment_year__c INCLUDES ('2013','2014')];
-        System.debug(fetch2010);
-        System.debug(fetch1314);
+        // CHANGE NAME [Done]
+        // QUERY INDENT [Done]
+        // NO HARD CODING [Done]
+        List<Account> accountListForYear2013_2014 = [
+            SELECT Name,
+                   Id,
+                   BillingCity,
+                   AccountNumber
+              FROM Account a
+             WHERE Enrollment_year__c INCLUDES (:year2013,:year2014)
+        ];
+        System.debug(accountListForYear2010);
+        System.debug(accountListForYear2013_2014);
     }
 
     public void fetchAccountsByBillingState() {
-        // CHANGE NAME
-        // QUERY INDENT
-        // NO HARD CODING
-        List<Account> fetchRecords = [SELECT a.Rating,
-                                             a.Name,
-                                             a.Id,
-                                             a.BillingState,
-                                             a.AccountNumber
-                                        FROM Account a
-                                       WHERE a.BillingState NOT IN ('Maharashtra','Kerala')
-                                    ORDER BY a.BillingState DESC
-                                  NULLS LAST
-                                       LIMIT 10000];
-        for(Account a: fetchRecords) {
-            System.debug(a);
+        // CHANGE NAME [Done]
+        // QUERY INDENT [Done]
+        // NO HARD CODING [Done]
+        final string maharashtra = 'Maharashtra';
+        final string kerala = 'Kerala';
+        List<Account> accountList = [
+            SELECT Rating,
+                   Name,
+                   Id,
+                   BillingState,
+                   AccountNumber
+              FROM Account
+             WHERE BillingState
+           NOT IN  (:maharashtra,:kerala)
+          ORDER BY BillingState DESC
+        NULLS LAST
+             LIMIT 10000];
+
+        for(Account accountInstance: accountList) {
+            System.debug(accountInstance);
         }
     }
 
     public void fetchOpportunity() {
-        // CHANGE NAME
-        // QUERY INDENT
-        List<Opportunity> oppList= [SELECT o.Id,
-                                           o.CreatedDate,
-                                           o.Amount
-                                      FROM Opportunity o
-                                     WHERE o.Amount >10000
-                                  ORDER BY o.CreatedDate
-                                     LIMIT 100
-                                    OFFSET 50
-                                  ALL ROWS];
-        for(Opportunity a: oppList) {
-            System.debug(a);
+        // CHANGE NAME [Done]
+        // QUERY INDENT [Done]
+        List<Opportunity> opportunityList= [
+            SELECT Id,
+                   CreatedDate,
+                   Amount
+              FROM Opportunity
+             WHERE Amount >10000
+          ORDER BY CreatedDate
+             LIMIT 100
+            OFFSET 50
+          ALL ROWS
+        ];
+        for(Opportunity opportunityInstance: opportunityList) {
+            System.debug(opportunityInstance);
         }
     }
 
     /*Set 2*/
     public void amountStats() {
-        // CHANGE NAME
-        // QUERY INDENT
-        List<AggregateResult> ar = [SELECT SUM(o.Amount) s,
-                                           CloseDate
-                                      FROM Opportunity o
-                                     WHERE IsClosed=FALSE AND
-                                           CloseDate = THIS_FISCAL_YEAR
-                                  GROUP BY CloseDate];
+        // CHANGE NAME [Done]
+        // QUERY INDENT [Done]
+        List<AggregateResult> aggregatedOpportunity = [
+            SELECT SUM(Amount) sum,
+                   CloseDate
+              FROM Opportunity o
+             WHERE IsClosed=FALSE 
+               AND CloseDate = THIS_FISCAL_YEAR
+          GROUP BY CloseDate];
+
         Map<Integer,Double> mapYear = new Map<Integer,Double>();
-        for(AggregateResult a : ar) {
+        for(AggregateResult AggregatedOpportunityIterator : aggregatedOpportunity) {
             mapYear.put(
-                Date.valueOf(a.get('CloseDate')).year(),
-                Double.valueOf(a.get('s'))
+                Date.valueOf(AggregatedOpportunityIterator.get('CloseDate')).year(),
+                Double.valueOf(AggregatedOpportunityIterator.get('s'))
             );
         }
         System.debug(mapYear);
     }
 
     public void leadSources() {
-        // CHANGE NAME
-        List<AggregateResult> ar = [SELECT count_distinct(Name) cd,
-                                           LeadSource
-                                      FROM lead
-                                  GROUP BY LeadSource
-                                    HAVING count_distinct(ID) > 10];
-        for(AggregateResult a : ar) {
-            System.debug('The count of distinct leads for ' + a.get('LeadSource') + ' is ' + a.get('cd'));
+        // CHANGE NAME [Done]
+        List<AggregateResult> AggregatedLead = [
+            SELECT count_distinct(Name) cd,
+                   LeadSource
+              FROM lead
+          GROUP BY LeadSource
+            HAVING count_distinct(ID) > 10
+        ];
+        for(AggregateResult AggregatedLeadIterator : AggregatedLead) {
+            System.debug(
+                'The count of distinct leads for ' 
+              + AggregatedLeadIterator.get('LeadSource') 
+              + ' is ' 
+              + AggregatedLeadIterator.get('cd'));
         }
     }
 

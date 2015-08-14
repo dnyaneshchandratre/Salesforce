@@ -5,7 +5,7 @@
  *  Created On: 7/22/2015
  */
 
-// WHY THIS CLASS IS GLOBAL?
+// WHY THIS CLASS IS GLOBAL? [Provde Valid Reason --Remoting]
 global with sharing class AccountListController {
     /*
     public static Boolean searchFlag = false;
@@ -21,15 +21,15 @@ global with sharing class AccountListController {
     public String selectedAlphabet    {get;set;}
     */
 
-    // INDENT AND SORT THESE
+    // INDENT AND SORT THESE [Done]
     public static Boolean searchFlag = false;
     global static List<Account> accountList;
     public Boolean alphaFlag = false;
     public List<Contact> relatedContactList;
 
     public Integer countOfRecords    {get;set;}
-    public String searchKey          {get;set;}    // STATIC??
-    public Id AccountId              {get;set;}    // NAME -> accountId
+    public String searchKey          {get;set;}    // STATIC?? [Unnecessary, removed!]
+    public Id AccountId              {get;set;}    // NAME -> accountId [Done for all names]
     public String AccountName        {get;set;}
     public List<String> alphabetList {get;set;}
     public String selectedAlphabet   {get;set;}
@@ -69,7 +69,7 @@ global with sharing class AccountListController {
         if(searchFlag == false) {
             System.debug('****** IN IF KEY : ' + searchKey);
 
-            // QUERY INDENTATION
+            // QUERY INDENTATION [Done]
             AccountList = [SELECT Id,
                                   Name,
                                   Email_Address__c,
@@ -82,9 +82,9 @@ global with sharing class AccountListController {
         } else {
             System.debug('****** IN ELSE KEY : ' + searchKey);
 
-            // STRING NAMELIKE = like : '%' + searchKey.trim() + '%';
-            // USE THIS IN QUERY
-            // QUERY INDENTATION
+            // STRING NAMELIKE = like : '%' + searchKey.trim() + '%'; [Done]
+            // USE THIS IN QUERY [Done]
+            // QUERY INDENTATION [Done]
             String searchKeyWithWildCardCharacters = '%' + searchKey.trim() + '%';
             AccountList = [SELECT Id,
                                   Name,
@@ -100,7 +100,7 @@ global with sharing class AccountListController {
         return AccountList;
     }
 
-    /* CHANGE PARAMETER NAME
+    /* CHANGE PARAMETER NAME  [No need for remoting here. Handled through <apex:actionfunction>]
     @RemoteAction
     global static List<Account> searchAccountRemote(String sKey) {
 
@@ -120,7 +120,7 @@ global with sharing class AccountListController {
 
     public void searchAccounts() {
         if(searchKey.length() < 3) {
-            // MESSAGE SHOULD COME FROM LABEL OR SHOULD BE DECLARED AS STATIC FINAL STRING
+            // MESSAGE SHOULD COME FROM LABEL OR SHOULD BE DECLARED AS STATIC FINAL STRING [Done]
             ApexPages.addmessage(new ApexPages.message(ApexPages.severity.FATAL,
                                                        System.Label.Search_Key_Error_Message));
             searchFlag = false;
@@ -135,7 +135,8 @@ global with sharing class AccountListController {
     }
 
     public PageReference RedirectToContacts() {
-        // NAME OF 'AID' AND 'AN'
+        // NAME OF 'AID' AND 'AN' 
+        // [Parameters from page: changed names as suggested in previous conversation]
         AccountId = ApexPages.currentPage().getParameters().get('aid');
         AccountName = ApexPages.currentPage().getParameters().get('an');
         PageReference pageRef = Page.RelatedContacts;
@@ -149,10 +150,10 @@ global with sharing class AccountListController {
         AccountId = ApexPages.currentPage().getParameters().get('aid');
         AccountName = ApexPages.currentPage().getParameters().get('an');
 
-        // EXPLICITLY CHECK FOR TRUE OR FALSE
-        if(!alphaFlag) {
+        // EXPLICITLY CHECK FOR TRUE OR FALSE [Done]
+        if(alphaFlag == false) {
 
-            // QUERY INDENTATION
+            // QUERY INDENTATION [Done]
             relatedContactList = [SELECT Id,
                                          Name,
                                          Phone,
@@ -162,7 +163,7 @@ global with sharing class AccountListController {
         } else {
             System.debug('*****************/*/*/*/*/*/*/*/*/ IN ELSE ' + selectedAlphabet);
 
-            // QUERY INDENTATION
+            // QUERY INDENTATION [Done]
             String selectedAlphabetWithWildCardCharacter = selectedAlphabet + '%';
             relatedContactList = [SELECT Id,
                                          Name,
@@ -190,7 +191,7 @@ global with sharing class AccountListController {
         searchFlag = false;
     }
 
-    // CHANGE NAME
+    // CHANGE NAME [Done]
     public void searchByAlphabet() {
         alphaFlag = true;
     }
@@ -199,11 +200,11 @@ global with sharing class AccountListController {
     global static void deleteRelatedContact(Id contactId) {
         Contact conInstance = new Contact(Id = contactId);
 
-        // THIS SHOULD BE HANDLED DIFFERENTLY
+        // THIS SHOULD BE HANDLED DIFFERENTLY [Done]
         if([SELECT Id 
               FROM Contact 
              WHERE Id 
-            NOT IN (SELECT ContactId
+                IN (SELECT ContactId
                       FROM Case
                      WHERE ContactId = :conInstance.Id)].size() == 0) {
             delete conInstance;
